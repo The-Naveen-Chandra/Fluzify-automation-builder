@@ -46,6 +46,13 @@ const MenuOptions = () => {
                     </Link>
                   </li>
                 </TooltipTrigger>
+                <TooltipContent
+                  side="right"
+                  sideOffset={10}
+                  className="bg-black/10 backdrop-blur-xl"
+                >
+                  <p>{menuItem.name}</p>
+                </TooltipContent>
               </Tooltip>
             </ul>
           ))}
