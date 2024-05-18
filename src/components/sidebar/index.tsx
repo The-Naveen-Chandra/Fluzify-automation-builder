@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Database, GitBranch, LucideMousePointerClick } from "lucide-react";
-
 import clsx from "clsx";
+
 import {
   Tooltip,
   TooltipContent,
@@ -15,18 +15,15 @@ import { Separator } from "@/components/ui/separator";
 import { ModeToggle } from "@/components/global/mode-toggle";
 import { menuOptions } from "@/lib/constant";
 
-type Props = {};
-
 const MenuOptions = () => {
   const pathName = usePathname();
 
   return (
-    <nav className="dark:bg-black h-screen overflow-scroll flex justify-between items-center flex-col gap-10 py-6 px-2">
+    <nav className=" dark:bg-black h-screen overflow-scroll  justify-between flex items-center flex-col  gap-10 py-6 px-2">
       <div className="flex items-center justify-center flex-col gap-8">
-        <Link href={"/"} className="flex font-bold flex-row">
+        <Link className="flex font-bold flex-row" href="/">
           fluzify.
         </Link>
-
         <TooltipProvider>
           {menuOptions.map((menuItem) => (
             <ul key={menuItem.name}>
@@ -34,7 +31,7 @@ const MenuOptions = () => {
                 <TooltipTrigger>
                   <li>
                     <Link
-                      href={menuItem}
+                      href={menuItem.href}
                       className={clsx(
                         "group h-8 w-8 flex items-center justify-center  scale-[1.5] rounded-lg p-[3px]  cursor-pointer",
                         {
@@ -51,7 +48,6 @@ const MenuOptions = () => {
                 </TooltipTrigger>
                 <TooltipContent
                   side="right"
-                  sideOffset={10}
                   className="bg-black/10 backdrop-blur-xl"
                 >
                   <p>{menuItem.name}</p>
