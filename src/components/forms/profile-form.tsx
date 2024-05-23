@@ -1,12 +1,12 @@
 "use client";
 
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { EditUserProfileSchema } from "@/lib/types";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 
+import { EditUserProfileSchema } from "@/lib/types";
 import {
   Form,
   FormControl,
@@ -14,44 +14,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
-type Props = {
-  user: any;
-  onUpdate?: any;
-};
+type Props = {};
 
-const ProfileForm = ({ user, onUpdate }: Props) => {
+const ProfileForm = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof EditUserProfileSchema>>({
     mode: "onChange",
     resolver: zodResolver(EditUserProfileSchema),
     defaultValues: {
-      name: user.name,
-      email: user.email,
+      name: "",
+      email: "",
     },
   });
 
-  const handleSubmit = async (
-    values: z.infer<typeof EditUserProfileSchema>
-  ) => {
-    setIsLoading(true);
-    await onUpdate(values.name);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    form.reset({ name: user.name, email: user.email });
-  }, [user]);
-
   return (
     <Form {...form}>
-      <form
-        className="flex flex-col gap-6"
-        onSubmit={form.handleSubmit(handleSubmit)}
-      >
+      <form className="flex flex-col gap-6" onSubmit={() => {}}>
         <FormField
           disabled={isLoading}
           control={form.control}
@@ -66,31 +49,29 @@ const ProfileForm = ({ user, onUpdate }: Props) => {
             </FormItem>
           )}
         />
+
         <FormField
+          disabled={isLoading || true}
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-lg">Email</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  disabled={true}
-                  placeholder="Email"
-                  type="email"
-                />
+                <Input {...field} placeholder="Email" type="email" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <Button
           type="submit"
           className="self-start hover:bg-[#2F006B] hover:text-white "
         >
           {isLoading ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader className="mr-2 h-4 w-4 animate-spin" />
               Saving
             </>
           ) : (
