@@ -1,10 +1,23 @@
+import { db } from "@/lib/db";
+
 import ProfileForm from "@/components/forms/profile-form";
-import React from "react";
+import ProfilePicture from "./_components/profile-picture";
 
 type Props = {};
 
 function Settings({}: Props) {
-  // TODO: Add Profile picture
+  const removeProfileImage = async () => {
+    "use server";
+    const response = await db.user.update({
+      where: {
+        clerkId: authUser.id,
+      },
+      data: {
+        profileImage: "",
+      },
+    });
+    return response;
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -19,6 +32,13 @@ function Settings({}: Props) {
             Add or update your information.
           </p>
         </div>
+
+        <ProfilePicture
+          onDelete={removeProfileImage}
+          userImage={user?.profileImage || ""}
+          onUpload={uploadProfileImage}
+        />
+
         <ProfileForm />
       </div>
     </div>
