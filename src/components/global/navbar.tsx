@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MenuIcon } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 
 const Navbar = async () => {
   return (
@@ -49,6 +50,8 @@ const Navbar = async () => {
             {true ? "Dashboard" : "Get Started"}
           </span>
         </Link>
+
+        <UserButton />
         <MenuIcon className="md:hidden" />
       </aside>
     </header>

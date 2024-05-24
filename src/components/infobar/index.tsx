@@ -1,8 +1,9 @@
 "use client";
 
+import { UserButton } from "@clerk/nextjs";
 import { Book, Headphones, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 
+import { Input } from "@/components/ui/input";
 import {
   Tooltip,
   TooltipContent,
@@ -40,6 +41,8 @@ const InfoBar = () => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+
+      <UserButton />
     </div>
   );
 };
