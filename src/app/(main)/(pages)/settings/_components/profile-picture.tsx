@@ -1,20 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-
-import UploadcareButton from "./uploadcare-button";
-import { X } from "lucide-react";
+import UploadCareButton from "./uploadcare-button";
 
 type Props = {
   userImage: string | null;
-  onDelete: any;
+  onDelete?: any;
   onUpload: any;
 };
 
-function ProfilePicture({ userImage, onDelete, onUpload }: Props) {
+const ProfilePicture = ({ userImage, onDelete, onUpload }: Props) => {
   const router = useRouter();
 
   const onRemoveProfileImage = async () => {
@@ -26,27 +25,31 @@ function ProfilePicture({ userImage, onDelete, onUpload }: Props) {
 
   return (
     <div className="flex flex-col">
-      <p className="text-lg text-white">Profile picture</p>
-
+      <p className="text-lg text-white"> Profile Picture</p>
       <div className="flex h-[30vh] flex-col items-center justify-center">
         {userImage ? (
           <>
-            <div className="relative h-full w-2/12">
-              <Image src={userImage} alt="User_image" />
+            <div className="relative h-full w-2/12 flex items-center justify-center">
+              <Image
+                src={userImage}
+                alt="User_Image"
+                width={140}
+                height={140}
+              />
             </div>
             <Button
               onClick={onRemoveProfileImage}
               className="bg-transparent text-white/70 hover:bg-transparent hover:text-white"
             >
-              <X />
+              <X /> Remove Logo
             </Button>
           </>
         ) : (
-          <UploadcareButton />
+          <UploadCareButton onUpload={onUpload} />
         )}
       </div>
     </div>
   );
-}
+};
 
 export default ProfilePicture;

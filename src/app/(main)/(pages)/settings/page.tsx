@@ -1,11 +1,18 @@
-import { db } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs/server";
 
+import { db } from "@/lib/db";
 import ProfileForm from "@/components/forms/profile-form";
 import ProfilePicture from "./_components/profile-picture";
 
-type Props = {};
+const Settings = async () => {
+  const authUser = await currentUser();
 
-function Settings({}: Props) {
+  if (!authUser) {
+    return null;
+  }
+
+  const user = await db.user.findUnique({ where: { clerkId: authUser.id } });
+
   const removeProfileImage = async () => {
     "use server";
     const response = await db.user.update({
@@ -17,6 +24,35 @@ function Settings({}: Props) {
       },
     });
     return response;
+  };
+
+  const uploadProfileImage = async (image: string) => {
+    "use server";
+    const id = authUser.id;
+    const response = await db.user.update({
+      where: {
+        clerkId: id,
+      },
+      data: {
+        profileImage: image,
+      },
+    });
+
+    return response;
+  };
+
+  const updateUserInfo = async (name: string) => {
+    "use server";
+
+    const updateUser = await db.user.update({
+      where: {
+        clerkId: authUser.id,
+      },
+      data: {
+        name,
+      },
+    });
+    return updateUser;
   };
 
   return (
@@ -39,10 +75,10 @@ function Settings({}: Props) {
           onUpload={uploadProfileImage}
         />
 
-        <ProfileForm />
+        <ProfileForm user={user} onUpdate={updateUserInfo} />
       </div>
     </div>
   );
-}
+};
 
 export default Settings;
