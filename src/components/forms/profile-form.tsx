@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
@@ -18,23 +18,41 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-type Props = {};
+type Props = {
+  user: any;
+  onUpdate: any;
+};
 
-const ProfileForm = (props: Props) => {
+const ProfileForm = ({ user, onUpdate }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof EditUserProfileSchema>>({
     mode: "onChange",
     resolver: zodResolver(EditUserProfileSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: user.name,
+      email: user.email,
     },
   });
 
+  const handleSubmit = async (
+    values: z.infer<typeof EditUserProfileSchema>
+  ) => {
+    setIsLoading(true);
+    await onUpdate(values.name);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    form.reset({ name: user.name, email: user.email });
+  }, [user]);
+
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-6" onSubmit={() => {}}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
         <FormField
           disabled={isLoading}
           control={form.control}
@@ -51,14 +69,19 @@ const ProfileForm = (props: Props) => {
         />
 
         <FormField
-          disabled={isLoading || true}
+          disabled={isLoading}
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-lg">Email</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Email" type="email" />
+                <Input
+                  {...field}
+                  placeholder="Email"
+                  type="email"
+                  disabled={true}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
