@@ -11,6 +11,14 @@ const font = DM_Sans({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Fluzify",
   description: "Automate Your Work With Fluzify.",
+  icons: {
+    icon: [
+      {
+        url: "/FluzifyLogo.png",
+        href: "/FluzifyLogo.png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
